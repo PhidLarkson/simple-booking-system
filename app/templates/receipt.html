@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Your Receipt</h2>
+    <p>Download your receipt below:</p>
+    <a href="{{ url_for('static', filename='receipt.pdf') }}" download>Download Receipt</a>
+{% endblock %}

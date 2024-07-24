@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <h2 class="heading">Available Buses</h2>
+        <form id="booking-form" method="post" action="{{ url_for('confirm_booking') }}" class="booking-form">
+            {% for bus in buses %}
+                <h3 class="bus-title">Bus {{ bus.id }}</h3>
+                <div class="bus">
+                    {% for seat in bus.seats %}
+                        <button 
+                            type="button"
+                            class="seat {% if seat.status == 'booked' %}booked{% elif seat.status == 'paid' %}paid{% else %}free{% endif %}"
+                            {% if seat.status != 'free' %}disabled{% endif %}
+                            onclick="toggleSeat({{ seat.id }}, this)" >
+                            {{ seat.id }}
+                        </button>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <input type="hidden" name="selected_seats" id="selected_seats">
+            <div class="user-info">
+                <input type="text" name="user_name" placeholder="Your Name" required>
+                <input type="text" name="additional_info" placeholder="Additional Info" required>
+            </div>
+            <button type="button" class="next-button" onclick="showPasswordModal()">Next</button>
+        </form>
+    </div>
+    
+    <!-- Password Modal -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePasswordModal()">&times;</span>
+            <h2>Enter Password</h2>
+            <input type="password" id="passwordInput" placeholder="Enter password">
+            <button type="button" onclick="verifyPassword()">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedSeats = [];
+        
+        function toggleSeat(seatId, button) {
+            const index = selectedSeats.indexOf(seatId);
+            if (index === -1) {
+                selectedSeats.push(seatId);
+                button.classList.add('selected');
+            } else {
+                selectedSeats.splice(index, 1);
+                button.classList.remove('selected');
+            }
+            document.getElementById('selected_seats').value = selectedSeats.join(',');
+        }
+
+        function showPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'block';
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+        }
+
+        function verifyPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const correctPassword = 'safe'; // Set your desired password here
+            if (password === correctPassword) {
+                document.getElementById('booking-form').submit();
+            } else {
+                alert('Incorrect password. Please try again.');
+            }
+        }
+
+        // Close the modal if the user clicks outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('passwordModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}

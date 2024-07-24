@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Create Buses</h2>
+    <form method="post" action="{{ url_for('admin') }}">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.number_of_buses.label }}<br>
+            {{ form.number_of_buses(size=32) }}
+        </div>
+        <div>
+            {{ form.seats_per_bus.label }}<br>
+            {{ form.seats_per_bus(size=32) }}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

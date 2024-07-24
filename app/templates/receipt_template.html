@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Receipt</title>
+</head>
+<body>
+    <h2>Receipt for {{name}} </h2>
+    <p>Thank you for your booking. Below are the details of your booking:</p>
+    <ul>
+        {% for seat in seats %}
+            <li>Bus {{ seat.bus_id }} - Seat {{ seat.id }}</li>
+        {% endfor %}
+    </ul>
+    <p>Total Seats: {{ seats|length }}</p>
+</body>
+</html>

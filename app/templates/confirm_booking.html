@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <h2 class="heading">Confirm Your Booking, {{ user }}</h2>
+        <ul class="seat-list">
+            {% for seat in seats %}
+                <li class="seat-item">Bus {{ seat.bus_id }} - Seat {{ seat.id }}</li>
+            {% endfor %}
+        </ul>
+        <form method="post" action="{{ url_for('process_payment') }}" class="payment-form">
+            <input type="hidden" name="seat_ids" value="{{ seats|map(attribute='id')|join(',') }}">
+            <button type="submit" class="pay-button">Pay Now</button>
+        </form>
+    </div>
+{% endblock %}
